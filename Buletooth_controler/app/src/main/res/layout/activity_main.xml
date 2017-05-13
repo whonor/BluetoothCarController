@@ -21,7 +21,9 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingRight="30dp"
-        android:paddingLeft="30dp">
+        android:paddingLeft="30dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="15dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -34,12 +36,6 @@
             android:layout_height="wrap_content"
             android:paddingLeft="140dp"
             android:paddingRight="5dp">
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="连接小车"
-                android:id="@+id/btn_cnt"
-                style="@android:style/Widget.Material.Light.Button" />
         </LinearLayout>
 
     </LinearLayout>
@@ -93,7 +89,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingTop="40dp"
+        android:paddingTop="30dp"
         android:paddingBottom="10dp"
         android:paddingRight="30dp"
         android:paddingLeft="30dp">

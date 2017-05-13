@@ -3,10 +3,8 @@ package com.honor.whonor.buletooth_controler;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
-import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -45,7 +43,7 @@ private static final String TAG = "Bluetooth_controler";
     }
 */
     private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-    private static final String address = "";//蓝牙模块的MAC地址
+    private static final String address = "20:16:08:08:45:98";//蓝牙模块的MAC地址
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
