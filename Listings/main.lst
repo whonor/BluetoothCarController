@@ -1,0 +1,86 @@
+C51 COMPILER V9.01   MAIN                                                                  05/19/2017 19:38:33 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: F:\KEIL5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main.l
+                    -st) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <reg52.h>
+   2          #include "PWM_RUN.h"
+*** WARNING C275 IN LINE 101 OF PWM_RUN.H: expression with possibly no effect
+*** WARNING C275 IN LINE 102 OF PWM_RUN.H: expression with possibly no effect
+*** WARNING C206 IN LINE 160 OF PWM_RUN.H: 'PMW_Left_time': missing function-prototype
+   3          
+   4          int flag = 0;
+   5          
+   6          char Rec[];
+   7          //´®¿Ú³õÊ¼»¯³ÌÐò
+   8          void UART_Init(void)
+   9          {
+  10   1        SCON  = 0x40;//´®¿Ú·½Ê½Ò»
+  11   1        PCON  = 0;//SOMD = 0
+  12   1        REN  = 1;//ÔÊÐí½ÓÊÕ
+  13   1        TMOD = 0x20;//¶¨Ê±Æ÷1·½Ê½2
+  14   1        TR1  = 1;//¿ªÆô¶¨Ê±Æ÷1
+  15   1        ES  = 1;//´ò¿ªUARTÖÐ¶Ï
+  16   1        EA  = 1;//´ò¿ª×ÜÖÐ¶Ï
+  17   1      }
+  18          
+  19          void main(void)
+  20          {
+  21   1        while(1)
+  22   1        {
+  23   2          switch(Rec[])
+*** ERROR C141 IN LINE 23 OF MAIN.C: syntax error near ']'
+  24   2          {
+  25   3            case "00"://Ç°½ø
+*** ERROR C220 IN LINE 25 OF MAIN.C: illegal constant expression
+  26   3              Left_moto_go;
+  27   3              Right_moto_go;
+  28   3            break;
+  29   3            case "01"://ºóÍË
+*** ERROR C220 IN LINE 29 OF MAIN.C: illegal constant expression
+  30   3              Left_moto_back;
+  31   3              Right_moto_back;
+  32   3            break;
+  33   3            case ""://ÓÒ×ª
+*** ERROR C220 IN LINE 33 OF MAIN.C: illegal constant expression
+  34   3              Left_moto_go;
+  35   3              Right_moto_back;
+  36   3            break;
+  37   3            case ""://×ó×ª
+*** ERROR C220 IN LINE 37 OF MAIN.C: illegal constant expression
+  38   3              Left_moto_back;
+  39   3              Right_moto_go;
+  40   3            break;
+  41   3            default:
+  42   3              break;
+  43   3            
+  44   3          }
+  45   2        }
+  46   1      }
+C51 COMPILER V9.01   MAIN                                                                  05/19/2017 19:38:33 PAGE 2   
+
+  47          
+  48          //´®¿Ú·þÎñÖÐ¶Ï×Ó³ÌÐòñ
+  49          void Uart_Timer1(void) interrupt 4
+  50          {
+  51   1        if(RI == 1)
+  52   1        {
+  53   2          RI = 0;
+  54   2          if(flag < 2)
+  55   2          {
+  56   3            Rec[flag] = SBUF;
+  57   3            flag++;
+  58   3          }
+  59   2          else
+  60   2          {
+  61   3            flag = 0;
+  62   3          }
+  63   2        }
+  64   1      }
+
+C51 COMPILATION COMPLETE.  3 WARNING(S),  5 ERROR(S)
