@@ -13,7 +13,7 @@
 
 extern void go();
 extern void back();
-//extern void stop();
+extern void stop();
 extern void left();
 extern void right();
 

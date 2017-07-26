@@ -1,0 +1,88 @@
+C51 COMPILER V9.01   MOTOR                                                                 07/25/2017 09:52:49 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE MOTOR
+OBJECT MODULE PLACED IN .\Objects\motor.obj
+COMPILER INVOKED BY: F:\KEIL5\C51\BIN\C51.EXE motor.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\motor
+                    -.lst) TABS(2) OBJECT(.\Objects\motor.obj)
+
+line level    source
+
+   1          #include <reg52.h>
+   2          
+   3          sbit IN1 = P1^0;
+   4          sbit IN2 = P1^1;
+   5          sbit IN3 = P1^2;
+   6          sbit IN4 = P1^3;
+   7          sbit INA = P1^4;//左使能端
+   8          sbit INB = P1^5;
+   9          
+  10          //前进函数
+  11          void go(void)
+  12          {
+  13   1        INA = 1;
+  14   1        INB = 1;
+  15   1        
+  16   1        IN1 = 1;
+  17   1        IN2 = 0;
+  18   1        IN3 = 1;
+  19   1        IN4 = 0;
+  20   1      }
+  21          
+  22          //后退函数
+  23          void back(void)
+  24          {
+  25   1        INA = 1;
+  26   1        INB = 1;
+  27   1        
+  28   1        IN1 = 0;
+  29   1        IN2 = 1;
+  30   1        IN3 = 0;
+  31   1        IN4 = 1;
+  32   1        
+  33   1      }
+  34          
+  35          //左转
+  36          void left(void)
+  37          {
+  38   1        INA = 1;
+  39   1        INB = 1;
+  40   1        
+  41   1        IN1 = 0;
+  42   1        IN2 = 1;
+  43   1        IN3 = 1;
+  44   1        IN4 = 0;
+  45   1      }
+  46          //右转
+  47          void right(void)
+  48          {
+  49   1        INA = 1;
+  50   1        INB = 1;
+  51   1        
+  52   1        IN1 = 1;
+  53   1        IN2 = 0;
+  54   1        IN3 = 0;
+C51 COMPILER V9.01   MOTOR                                                                 07/25/2017 09:52:49 PAGE 2   
+
+  55   1        IN4 = 1;
+  56   1      }
+  57          //STOP
+  58          void stop()
+  59          {
+  60   1        INA = 0;
+  61   1        INB = 0;
+  62   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     57    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -230,7 +230,7 @@
               <RCB>
                 <Type>0</Type>
                 <StartAddress>0x0</StartAddress>
-                <Size>0x10000</Size>
+                <Size>0xffff</Size>
               </RCB>
               <RXB>
                 <Type>0</Type>
@@ -377,6 +377,11 @@
               <FileName>motor.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\motor.h</FilePath>
+            </File>
+            <File>
+              <FileName>stc89xx.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\stc89xx.h</FilePath>
             </File>
           </Files>
         </Group>

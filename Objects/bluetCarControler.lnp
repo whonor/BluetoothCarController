@@ -1,0 +1,4 @@
+".\Objects\main.obj",
+".\Objects\motor.obj" 
+TO ".\Objects\bluetCarControler" 
+PRINT(".\Listings\bluetCarControler.m51") RAMSIZE(256) 

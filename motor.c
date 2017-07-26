@@ -54,3 +54,9 @@ void right(void)
 	IN3 = 0;
 	IN4 = 1;
 }
+//STOP
+void stop()
+{
+	INA = 0;
+	INB = 0;
+}

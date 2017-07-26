@@ -1,4 +1,4 @@
-C51 COMPILER V9.01   MAIN                                                                  05/19/2017 19:38:33 PAGE 1   
+C51 COMPILER V9.01   MAIN                                                                  07/25/2017 09:52:48 PAGE 1   
 
 
 C51 COMPILER V9.01, COMPILATION OF MODULE MAIN
@@ -8,79 +8,153 @@ COMPILER INVOKED BY: F:\KEIL5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DE
 
 line level    source
 
-   1          #include <reg52.h>
-   2          #include "PWM_RUN.h"
-*** WARNING C275 IN LINE 101 OF PWM_RUN.H: expression with possibly no effect
-*** WARNING C275 IN LINE 102 OF PWM_RUN.H: expression with possibly no effect
-*** WARNING C206 IN LINE 160 OF PWM_RUN.H: 'PMW_Left_time': missing function-prototype
-   3          
-   4          int flag = 0;
-   5          
-   6          char Rec[];
-   7          //´®¿Ú³õÊ¼»¯³ÌÐò
-   8          void UART_Init(void)
-   9          {
-  10   1        SCON  = 0x40;//´®¿Ú·½Ê½Ò»
-  11   1        PCON  = 0;//SOMD = 0
-  12   1        REN  = 1;//ÔÊÐí½ÓÊÕ
-  13   1        TMOD = 0x20;//¶¨Ê±Æ÷1·½Ê½2
-  14   1        TR1  = 1;//¿ªÆô¶¨Ê±Æ÷1
-  15   1        ES  = 1;//´ò¿ªUARTÖÐ¶Ï
-  16   1        EA  = 1;//´ò¿ª×ÜÖÐ¶Ï
-  17   1      }
-  18          
-  19          void main(void)
-  20          {
-  21   1        while(1)
-  22   1        {
-  23   2          switch(Rec[])
-*** ERROR C141 IN LINE 23 OF MAIN.C: syntax error near ']'
-  24   2          {
-  25   3            case "00"://Ç°½ø
-*** ERROR C220 IN LINE 25 OF MAIN.C: illegal constant expression
-  26   3              Left_moto_go;
-  27   3              Right_moto_go;
-  28   3            break;
-  29   3            case "01"://ºóÍË
-*** ERROR C220 IN LINE 29 OF MAIN.C: illegal constant expression
-  30   3              Left_moto_back;
-  31   3              Right_moto_back;
-  32   3            break;
-  33   3            case ""://ÓÒ×ª
-*** ERROR C220 IN LINE 33 OF MAIN.C: illegal constant expression
-  34   3              Left_moto_go;
-  35   3              Right_moto_back;
-  36   3            break;
-  37   3            case ""://×ó×ª
-*** ERROR C220 IN LINE 37 OF MAIN.C: illegal constant expression
-  38   3              Left_moto_back;
-  39   3              Right_moto_go;
-  40   3            break;
-  41   3            default:
-  42   3              break;
-  43   3            
-  44   3          }
-  45   2        }
-  46   1      }
-C51 COMPILER V9.01   MAIN                                                                  05/19/2017 19:38:33 PAGE 2   
+   1          /*
+   2          *±¾³ÌÐòÓÃ¶¨Ê±Æ÷2×÷Îª²¨ÌØÂÊ·¢ÉúÆ÷£¬ÓÉÄ£¿é½ÓÊÕÊý¾Ý´«µ½µ¥Æ¬»ú£¬Í¬Ê±¿É»Ø´«Êý¾Ýµ½¿ØÖÆÖ÷»ú£¬ÊµÏÖÐ¡³µµÄ¿ØÖÆ¹¦ÄÜ
+   3          *Í¨ÐÅÐ­Òé£º1  Ç°½ø 1
+   4                     2  ºóÍË 2
+   5                     3  ÓÒ×ª 3
+   6                     4  ×ó×ª 4
+   7                     ÆäËü Í£Ö¹ stop
+   8          *Æ½Ì¨£ºSTC89C52RC
+   9          *×÷Õß£ºW_Honor
+  10          *ÈÕÆÚ£º2017/7/24
+  11          */
+  12          #include <stc89xx.h>
+  13          #include "motor.h"
+  14          
+  15          #define FOSC 12000000L      //System frequency
+  16          #define BAUD 9600   //ÉèÖÃ²¨ÌØÂÊ
+  17          
+  18          bit flag = 0;
+  19          
+  20          bit rec_flag = 0;//Êý¾Ý½ÓÊÜ±êÖ¾Î»
+  21          
+  22          unsigned char RecData = 0;
+  23          
+  24          char code str[] = "stop"; 
+  25          
+  26          
+  27          //´®¿Ú³õÊ¼»¯³ÌÐò  `
+  28          void UART_Init(void)
+  29          {
+  30   1       //PCON = 0x80;//²¨ÌØÂÊ¼Ó±¶£¬SOMD = 1
+  31   1       SCON = 0x50; //SM0 SM1 SM2 REN TB8 RB8 TI RI ´®ÐÐ¿Ú¹¤×÷·½Ê½1£¬10Î»Òì²½ÊÕ·¢
+  32   1       RCAP2H = (65536-(FOSC/32/BAUD)) >> 8;
+  33   1       RCAP2L = (65536-(FOSC/32/BAUD));
+  34   1       TH2 = RCAP2H;
+  35   1       TL2 = RCAP2L;
+  36   1       T2CON = 0x34; //TF2 EXF2 RCLK TCLK EXEN2 TR2 C/T2 CP/RL2//¶¨Ê±Æ÷2ÓÃ×÷²¨ÌØÂÊ·¢ÉúÆ÷
+  37   1       T2MOD = 0;
+  38   1       ES = 1;
+  39   1       EA = 1;
+  40   1        
+  41   1      /*  PCON = 0x80;
+  42   1          SCON = 0x50;   // 
+  43   1          TMOD = 0x20;   //T1
+  44   1          TH1 = 0xF3;    //[
+  45   1          TL1 = 0xF3;  
+  46   1          TR1 = 1;                  
+  47   1          ES  = 1;       //
+  48   1          EA  = 1;
+  49   1        */
+  50   1      }
+  51          
+  52          //ÏòÉÏÎ»»ú·¢ËÍÒ»¸ö×Ö½ÚÊÝÐÅÏ¢
+  53          void senddata(char dat)
+  54          {
+C51 COMPILER V9.01   MAIN                                                                  07/25/2017 09:52:48 PAGE 2   
 
-  47          
-  48          //´®¿Ú·þÎñÖÐ¶Ï×Ó³ÌÐòñ
-  49          void Uart_Timer1(void) interrupt 4
-  50          {
-  51   1        if(RI == 1)
-  52   1        {
-  53   2          RI = 0;
-  54   2          if(flag < 2)
-  55   2          {
-  56   3            Rec[flag] = SBUF;
-  57   3            flag++;
-  58   3          }
-  59   2          else
-  60   2          {
-  61   3            flag = 0;
-  62   3          }
-  63   2        }
+  55   1          if(rec_flag == 1)
+  56   1          {
+  57   2            ES=0;//
+  58   2            SBUF=dat;
+  59   2            while(!TI);
+  60   2            TI=0;
+  61   2            ES=1;//
+  62   2          }
+  63   1          rec_flag = 0;
   64   1      }
+  65          
+  66          //ÏòÉÏÎ»»ú·¢ËÍÒ»¸ö×Ö·û´®
+  67          void sendstr(void)
+  68          {
+  69   1        unsigned int i = 0;
+  70   1        if(flag == 1)
+  71   1        {
+  72   2          flag = 0;
+  73   2          while(str[i] != '\0')
+  74   2        {
+  75   3          ES = 0;
+  76   3          SBUF = str[i];
+  77   3          while(!TI);
+  78   3          TI = 0;
+  79   3          i++;
+  80   3          ES = 1;
+  81   3        }
+  82   2        i = 0;
+  83   2        }
+  84   1      }
+  85          
+  86          //Ö÷º¯Êý
+  87          void main(void)
+  88          {
+  89   1        UART_Init();
+  90   1        P0 = 0;//ÆÁ±Î¸ÉÈÅ
+  91   1        while(1);
+  92   1        }
+  93          
+  94          //´®¿Ú·þÎñÖÐ¶Ï×Ó³ÌÐòñ
+  95          void Uart_Timer2(void) interrupt 4//ÖÐ¶Ï½ÓÊÕÒ»¸ö×Ö½ÚÊý¾Ý,´®¿ÚÖÐ¶ÏºÎª4Å
+  96          {
+  97   1        unsigned char i = 0;
+  98   1        if(RI == 1)//½ÓÊÕ±êÖ¾Î»//µ±Ó²¼þ½ÓÊÕµ½Êý¾ÝÊ±»áÖÃÎ»
+  99   1        {
+ 100   2          RI = 0;//¹Ø±Õ½ÓÊÕÊ  
+ 101   2          RecData = SBUF;
+ 102   2          rec_flag = 1;//½ÓÊÜÍêÒ»¸ö×Ö·ûÖÃ1
+ 103   2          switch(RecData)
+ 104   2          {
+ 105   3            case '1'://Ç°½ø
+ 106   3              go();
+ 107   3              senddata('1');
+ 108   3            break;
+ 109   3            case '2'://ºóÍË
+ 110   3              back();
+ 111   3              senddata('2');
+ 112   3            break;
+ 113   3            case '3'://ÓÒ×ª
+ 114   3              right();
+ 115   3              senddata('3');
+ 116   3            break;
+C51 COMPILER V9.01   MAIN                                                                  07/25/2017 09:52:48 PAGE 3   
 
-C51 COMPILATION COMPLETE.  3 WARNING(S),  5 ERROR(S)
+ 117   3            case '4'://×ó×ª
+ 118   3              left();
+ 119   3              senddata('4');
+ 120   3            break;
+ 121   3            default:
+ 122   3              stop();
+ 123   3              flag = 1;
+ 124   3              sendstr();
+ 125   3              break;
+ 126   3          }
+ 127   2        }
+ 128   1        else
+ 129   1        {
+ 130   2          TI = 0;
+ 131   2        }
+ 132   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    213    ----
+   CONSTANT SIZE    =      5    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      2    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
